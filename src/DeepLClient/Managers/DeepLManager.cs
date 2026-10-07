@@ -42,17 +42,24 @@ namespace DeepLClient.Managers
                 // load source languages
                 Variables.SourceLanguages.Clear();
                 var sourceLanguages = await Variables.Translator.GetSourceLanguagesAsync();
-                foreach (var language in sourceLanguages) Variables.SourceLanguages.Add(language.Name, language.Code);
+                foreach (var language in sourceLanguages)
+                {
+                    var name = Variables.SourceLanguages.ContainsKey(language.Name) ? $"{language.Name} ({language.Code})" : language.Name;
+                    Variables.SourceLanguages[name] = language.Code;
+                }
 
                 // add auto detect option
                 Variables.SourceLanguages.Add("AUTO DETECT", "AUTO DETECT");
 
                 // load target languages
                 Variables.TargetLanguages.Clear();
+                Variables.FormalitySupportedLanguages.Clear();
                 var targetLanguages = await Variables.Translator.GetTargetLanguagesAsync();
                 foreach (var language in targetLanguages)
                 {
-                    Variables.TargetLanguages.Add(language.Name, language.Code);
+                    // the API can return several entries with the same name (e.g. German: de / de-DE), disambiguate by code
+                    var name = Variables.TargetLanguages.ContainsKey(language.Name) ? $"{language.Name} ({language.Code})" : language.Name;
+                    Variables.TargetLanguages[name] = language.Code;
                     if (language.SupportsFormality) Variables.FormalitySupportedLanguages.Add(language.Code);
                 }
 
