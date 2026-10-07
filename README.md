@@ -23,6 +23,7 @@ Click [here](https://github.com/LAB02-Research/DeepL-Translator/releases/latest/
  * [Usage](#usage)
  * [Screenshots](#screenshots)
  * [Implemented](#implemented)
+ * [Publishing](#publishing)
  * [Credits and Licensing](#credits-and-licensing)
 
 ----
@@ -180,6 +181,20 @@ This is a list of features and fixes that have so far been done:
 - Add 'open subscription' button to info page
 - Improve installer graphics
 - Bundle .NET 7 and WebView2 with installer
+
+----
+
+### Publishing
+
+Publish to `C:\Projects\tools\deepl` (the folder the running app uses). From the repo root:
+
+```bash
+dotnet publish src/DeepLClient/DeepLClient.csproj -c Release -o C:/Projects/tools/deepl
+```
+
+From `src/DeepLClient` the relative form `-o ../../../deepl` resolves to the same folder. Run from the repo root, `../../../deepl` would wrongly land in `C:\deepl`.
+
+Requires the .NET 10 Desktop Runtime on the target machine; add `--self-contained -r win-x64` to bundle it.
 
 ----
 
